@@ -1,5 +1,6 @@
 .App {
-  text-align: center;
+  padding-bottom: 30px;
+  padding-top: 30px;
 }
 
 .App-logo {
@@ -35,4 +36,22 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.App-title {
+  margin: 30px;
+  text-align: center;
+}
+
+.description {
+  text-align: start;
+}
+
+.fundraiser-component {
+  text-align: start;
+  border-radius: 5px;
+  border-color: black;
+  border-width: 2px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+  padding: 20px;
 }
