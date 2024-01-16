@@ -1,6 +1,5 @@
-//import logo from './logo.svg';
 import './App.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import data from './data/data.json';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -11,14 +10,59 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import ProgressBar from 'react-bootstrap/ProgressBar';
 import CollapsibleComponent from './Components/CollapsibleComponent';
 import UserForm from "./Components/UserForm";
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { fas } from '@fortawesome/free-solid-svg-icons';
+import {getData} from './Services/Http-Service';
+
+//loads font awesome library
+library.add(fas);
 
 function App() {
-  //add a function that counts up the amount raised to show animation on page load.
-  let percent = data.AmmountRaised/data.Goal*100;
-  let donations = data.AmmountRaised.toLocaleString(undefined, {minimumFractionDigits:0});
-  let goal = data.Goal.toLocaleString(undefined, {minimumFractionDigits:0});
-  const questions = data.Questions.map(question =>
-    <CollapsibleComponent heading={question.Question} body={question.Answer}/>);
+  const [amountRaised, setAmountRaised] = useState(0)
+  const [percent, setPercent] = useState(0);
+  const [donations, setDonations] = useState(data.donations);
+  const [intervalAmount, setIntervalAmount] = useState(data.ammountRaised*0.03)
+  const [goal, setGoal] = useState(data.goal.toLocaleString(undefined, {minimumFractionDigits:0}));
+  const [remoteData, setRemoteData] = useState([]);
+
+  //request API adata
+  useEffect( () => {
+      let mounted = true;
+      getData('https://shop-api-ak3u.onrender.com/product')
+        .then(items => {
+          if(mounted) {
+            //set data
+            setRemoteData(items)
+          }
+        })
+        
+      return () => mounted = false;
+  }, []);
+
+  //interval to animate progress bar
+    useEffect(() => {
+      const updateDonationHandler = setInterval(() => {
+        setAmountRaised(s => s + intervalAmount);
+        setPercent(Math.round((amountRaised/data.goal)*100));
+        if(amountRaised >= data.ammountRaised){
+          setAmountRaised(data.ammountRaised);
+          setPercent(Math.round((amountRaised/data.goal)*100));
+          clearInterval(updateDonationHandler);
+        }
+      },50);
+      return () => clearInterval(updateDonationHandler);
+    }, [amountRaised]);
+  
+    
+
+  //create list of question items to render
+  const questions = data.questions.map(question =>
+    <CollapsibleComponent heading={question.question} body={question.answer}/>);
+  
+    //create list of rewards to render
+  const rewards = data.donationRewards.map(reward => <h4>{reward}</h4>);
+  
+  //check for form validation and submit form
   const [validated,setValidated] = useState(false);
   const handleSubmit = (event) => {
     const form = event.currentTarget;
@@ -26,12 +70,10 @@ function App() {
       event.preventDefault();
       event.stopPropagation();
     }
-
     setValidated(true);
   }
 
   return (
-
     <div className="App container">
       <Container fluid>
         <h1 className='App-title'>{data.title}</h1>
@@ -43,15 +85,17 @@ function App() {
               <h2>Description</h2>
               <hr/>
               <p>{data.description}</p>
+              <hr/>
             </Col>
+
             <Row>
+              
+              {/* Q&A section */}
               <Col>
-                <hr/>
                 <h3 className='my-4'>Q&A</h3>
-                {/*Load questions and answers here
-                */
+                {/* Load questions and answers here */
                questions}
-                <CollapsibleComponent heading="Signup for our newsletter!" body={<UserForm description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."/>}/>
+                <CollapsibleComponent heading={data.finalQuestion.question} body={<UserForm description={data.finalQuestion.answer}/>}/>
               </Col>
             </Row>
           </Row>
@@ -62,8 +106,9 @@ function App() {
         */}
         <Col md={4}>
           <Row>
-            <Col className='fundraiser-component'>
-              <h4>Raised: $ {donations} of {goal}</h4>
+            {/*Donation Panel*/}
+            <Col className='fundraiser-component p-4 bg-secondary-subtle'>
+              <h4>Raised: $ {amountRaised.toLocaleString(undefined, {minimumFractionDigits:0})} of {goal}</h4>
               <ProgressBar now={percent} label={`${percent}%`} variant="success"/>
               <p>{donations} Donations</p>
                     
@@ -74,8 +119,20 @@ function App() {
                   <Form.Control.Feedback type="invalid">Please enter a positive number</Form.Control.Feedback>
                 </Form.Group>
                 
-                <Button type="submit" className='w-1000'>Donate Now</Button>
+                <Form.Group className='d-grid'>
+                  <Button type="submit" variant='success' className='d-grid'>Donate Now</Button>
+                </Form.Group>
               </Form>
+
+            </Col>
+          </Row>
+          <Row>
+
+            {/* Donation Rewards section */}
+            <Col className='p-4'>
+              <h3>Donation Rewards</h3>
+              <br/>
+              {rewards}
             </Col>
           </Row>
         </Col>

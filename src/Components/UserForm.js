@@ -2,14 +2,12 @@ import React from 'react'
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
-//props: description
+/*Component to display final Q&A section with email prompt
+ * props: description
+ */
 function UserForm(props) {
   return (
     <Form>
-      {/* 
-      description
-      email address
-      */}
       <Form.Group>
         <Form.Text>
           {props.description}
@@ -21,7 +19,7 @@ function UserForm(props) {
         <Form.Control type="email" placeholder="Enter email"/>
       </Form.Group>
       
-      <Button variant="primary" type="submit" >
+      <Button variant="outline-dark" type="submit">
         Submit
       </Button>
     </Form>
