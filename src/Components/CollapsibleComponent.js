@@ -13,7 +13,7 @@ import { Button } from 'react-bootstrap';
 
   return (
     <div className='my-2 d-grid'>
-      <Button className='border text-white d-flex justify-content-between ' size="lg" variant="secondary" onClick={() => setOpen(!open)}>
+      <Button className='border d-flex justify-content-between ' size="lg" variant="light" onClick={() => setOpen(!open)}>
         {props.heading} {open ? <FontAwesomeIcon icon="fa-solid fa-chevron-up" /> : <FontAwesomeIcon icon="fa-solid fa-chevron-down" />}
       </Button>
         <Collapse in={open} className='p-3'>

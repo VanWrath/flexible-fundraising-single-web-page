@@ -26,7 +26,7 @@ function UserForm(props) {
   return (
     <Form noValidate validated={validated} onSubmit={handleSubmit}>
       <Form.Group>
-        <Form.Text>
+        <Form.Text >
           {props.description}
         </Form.Text>
       </Form.Group>

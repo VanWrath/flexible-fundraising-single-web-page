@@ -67,6 +67,8 @@ function App() {
       return () => clearInterval(updateDonationHandler);
     }, [amountRaised, intervalAmount]);
 
+  const description = data.description.map(paragraph => <p>{paragraph}</p>);
+  
   //create list of question items to render
   const questions = data.questions.map(question =>
     <CollapsibleComponent heading={question.question} body={question.answer}/>);
@@ -101,15 +103,15 @@ function App() {
       </div>
       
       <Container fluid>
-        <h1 className='App-title'>{data.title}</h1>
-      <Row>
+        <h1 className='m-5 text-center'>{data.title}</h1>
+      <Row className='d-flex justify-content-between'>
         {/* Main Column*/}
         <Col md={8}>
           <Row>
             <Col>
               <h2>Description</h2>
               <hr/>
-              <p>{data.description}</p>
+              <p>{description}</p>
               <hr/>
             </Col>
 
