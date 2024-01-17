@@ -71,4 +71,40 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 
 ### Deploy with Cloudflare
 
-deploy with 'npm run pages:deploy'
+Deploy with 'npm run pages:deploy'
+You may also follow the instructions from cloudflare on how to deploy this react app here: [https://developers.cloudflare.com/pages/framework-guides/deploy-a-react-site/](https://developers.cloudflare.com/pages/framework-guides/deploy-a-react-site/)
+
+### To Update Title and Favicon
+ In the public folder, open up 'index.html' file.
+ On line 5, you can change the favicon in the Link tag. just replace the url in the href of the icon you want.
+ You may also upload your own favicon in the public folder and link that.
+
+ You can change the title of the webpage on line 27 in the title tag.
+
+ ### Updating the page content
+
+You may updte the content of the page to suit your campaign. You can do this in the 'src/data/data.json' directory.
+Once you have opened the data.json file, you may edit the variables following the JSON format. Editing these variables will update the page content to your liking.
+
+You may add any number of questions in the questions array and it will all be displayed on the page. just make sure your questions are in the following format:
+
+```json
+{
+    "question": "Question 1?",
+    "answer": "Answer 1."
+}
+```
+
+You may also edit the rewards in "donationRewards" array.
+
+## Connecting to external APIs
+
+If you need to fetch data from an external API, you may do so using the fetch block in line 29.
+
+## Handling form submissions
+
+There is a user form that takes in a user's email. This can be found in 'src/Components/UserForm.js'. You can edit the code on how to handle the email submission in the 'handleSumbit' function.
+
+## Stripe integration
+
+Comming soon...

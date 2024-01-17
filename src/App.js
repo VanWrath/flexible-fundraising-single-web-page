@@ -12,7 +12,8 @@ import CollapsibleComponent from './Components/CollapsibleComponent';
 import UserForm from "./Components/UserForm";
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
-import {getData} from './Services/Http-Service';
+import ToastContainer from 'react-bootstrap/ToastContainer';
+import Notification from './Components/Notification';
 
 //loads font awesome library
 library.add(fas);
@@ -20,61 +21,85 @@ library.add(fas);
 function App() {
   const [amountRaised, setAmountRaised] = useState(0)
   const [percent, setPercent] = useState(0);
-  const [donations, setDonations] = useState(data.donations);
-  const [intervalAmount, setIntervalAmount] = useState(data.ammountRaised*0.03)
+  const [donations, setDonations] = useState(data.donations); //replace data.donations with data from an API to get live donations values.
+  const [intervalAmount, setIntervalAmount] = useState(data.amountRaised*0.05);
+  const [remoteData, setRemoteData] = useState();
   const [goal, setGoal] = useState(data.goal.toLocaleString(undefined, {minimumFractionDigits:0}));
-  const [remoteData, setRemoteData] = useState([]);
+  const[donationAmount, setDonationAmount] = useState();
 
   //request API adata
   useEffect( () => {
       let mounted = true;
-      getData('https://shop-api-ak3u.onrender.com/product')
-        .then(items => {
-          if(mounted) {
-            //set data
-            setRemoteData(items)
+      //input URL of API to get data
+      fetch('https://shop-api-ak3u.onrender.com/product')
+        .then(response => {
+          if(response.ok) {
+            if(mounted) {
+              //set data
+              return response.json();
+            }
           }
+        })
+        .then(json => {
+          if(json){
+            setRemoteData(json[6].price);
+            console.log(remoteData);
+          }
+          
         })
         
       return () => mounted = false;
   }, []);
+
+  
 
   //interval to animate progress bar
     useEffect(() => {
       const updateDonationHandler = setInterval(() => {
         setAmountRaised(s => s + intervalAmount);
         setPercent(Math.round((amountRaised/data.goal)*100));
-        if(amountRaised >= data.ammountRaised){
-          setAmountRaised(data.ammountRaised);
+        if(amountRaised >= data.amountRaised){
+          setAmountRaised(data.amountRaised);
           setPercent(Math.round((amountRaised/data.goal)*100));
           clearInterval(updateDonationHandler);
         }
       },50);
       return () => clearInterval(updateDonationHandler);
-    }, [amountRaised]);
-  
-    
+    }, [amountRaised, intervalAmount]);
 
   //create list of question items to render
   const questions = data.questions.map(question =>
     <CollapsibleComponent heading={question.question} body={question.answer}/>);
   
-    //create list of rewards to render
+  //create list of rewards to render
   const rewards = data.donationRewards.map(reward => <h4>{reward}</h4>);
   
   //check for form validation and submit form
+  //need to check for negative values.
   const [validated,setValidated] = useState(false);
   const handleSubmit = (event) => {
+    event.preventDefault();
     const form = event.currentTarget;
-    if(form.checkValidity() === false) {
-      event.preventDefault();
+    if (form.checkValidity() === false) {
       event.stopPropagation();
     }
+    console.log("Amount to doante: " + donationAmount);
+    //Handle donation submit here ******************************
+    
     setValidated(true);
-  }
+  };
+
 
   return (
-    <div className="App container">
+    <div className="App container" style={{ minHeight: '240px' }}>
+      <div className='' >
+      <ToastContainer className='p-3' position='top-start' style={{ zIndex: 1 }}>
+        {/*Push new notifications in here when a new donation occurs. */}
+        <Notification name="Tim" donation={10} message="Hello World! This is a toast message"/>
+        <Notification name="Kevin" donation={20} message="Hello World! This is a toast message"/>
+      </ToastContainer>
+      </div>
+      
       <Container fluid>
         <h1 className='App-title'>{data.title}</h1>
       <Row>
@@ -88,11 +113,10 @@ function App() {
               <hr/>
             </Col>
 
-            <Row>
-              
+            <Row>  
               {/* Q&A section */}
               <Col>
-                <h3 className='my-4'>Q&A</h3>
+                <h3 className='my-3 p-2'>Q&A</h3>
                 {/* Load questions and answers here */
                questions}
                 <CollapsibleComponent heading={data.finalQuestion.question} body={<UserForm description={data.finalQuestion.answer}/>}/>
@@ -108,14 +132,14 @@ function App() {
           <Row>
             {/*Donation Panel*/}
             <Col className='fundraiser-component p-4 bg-secondary-subtle'>
-              <h4>Raised: $ {amountRaised.toLocaleString(undefined, {minimumFractionDigits:0})} of {goal}</h4>
+              <h4>Raised: ${amountRaised.toLocaleString(undefined, {minimumFractionDigits:0})} of ${goal}</h4>
               <ProgressBar now={percent} label={`${percent}%`} variant="success"/>
               <p>{donations} Donations</p>
                     
               <Form noValidate validated={validated} onSubmit={handleSubmit}>
                 <Form.Group className="mb-3" controlId="donationValidation">
                   <Form.Label>Donation Amount</Form.Label>
-                  <Form.Control required type="number" placeholder="Enter amount"/>
+                  <Form.Control required type="number" placeholder="Enter amount" onChange={(e) => setDonationAmount(e.target.value)}/>
                   <Form.Control.Feedback type="invalid">Please enter a positive number</Form.Control.Feedback>
                 </Form.Group>
                 
