@@ -17,9 +17,11 @@ function UserForm(props) {
     if (form.checkValidity() === false) {
       event.stopPropagation();
     }
-    //handle email submission here *********************
-    console.log("Email has been submitted: " + email);
+    else{
+      //handle email submission here *********************
+      console.log("Email has been submitted: " + email);
 
+    }
     setValidated(true);
   };
 

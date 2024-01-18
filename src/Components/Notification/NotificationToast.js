@@ -2,10 +2,10 @@ import React from 'react';
 import { useState } from 'react';
 import Toast from 'react-bootstrap/Toast';
 
-/* Component to display donation notifications
- * Props: name, donation, message
+/* Component to display donation toast notifications
+ * Props: name, donation, message, currency, id
  */
-function Notification(props) {
+function NotificationToast(props) {
     const [show, setShow] = useState(true);
     const toggleShow = () => setShow(!show);
 
@@ -15,10 +15,10 @@ function Notification(props) {
             <strong className="me-auto">{props.name}</strong>
         </Toast.Header>
         <Toast.Body>
-            Donated ${props.donation} - {props.message}
+            Donated {props.currency}{props.donation} - {props.message}
         </Toast.Body>
     </Toast>
   )
 }
 
-export default Notification;
+export default NotificationToast;

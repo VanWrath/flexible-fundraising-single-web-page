@@ -12,46 +12,58 @@ import CollapsibleComponent from './Components/CollapsibleComponent';
 import UserForm from "./Components/UserForm";
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
-import ToastContainer from 'react-bootstrap/ToastContainer';
-import Notification from './Components/Notification';
+import Notification from './Components/Notification/Notification';
 
 //loads font awesome library
 library.add(fas);
+const URL = data.donationDataApiUrl;
+const stripeURL = data.stripePaymentLink;
 
 function App() {
+  //Variable state filled with Dummy Data from data.json.
   const [amountRaised, setAmountRaised] = useState(0)
   const [percent, setPercent] = useState(0);
   const [donations, setDonations] = useState(data.donations); //replace data.donations with data from an API to get live donations values.
+  const [goal, setGoal] = useState(data.goal);
   const [intervalAmount, setIntervalAmount] = useState(data.amountRaised*0.05);
+  const [donationAmount, setDonationAmount] = useState();
   const [remoteData, setRemoteData] = useState();
-  const [goal, setGoal] = useState(data.goal.toLocaleString(undefined, {minimumFractionDigits:0}));
-  const[donationAmount, setDonationAmount] = useState();
 
-  //request API adata
+  /* Request API data. 
+   * Update donations and amount raised dynamically.
+   */
   useEffect( () => {
       let mounted = true;
-      //input URL of API to get data
-      fetch('https://shop-api-ak3u.onrender.com/product')
-        .then(response => {
-          if(response.ok) {
-            if(mounted) {
-              //set data
-              return response.json();
-            }
-          }
-        })
-        .then(json => {
-          if(json){
-            setRemoteData(json[6].price);
-            console.log(remoteData);
-          }
-          
-        })
-        
-      return () => mounted = false;
-  }, []);
 
-  
+      const checkApiData = setInterval(()=>{
+        if(URL){
+          fetch(URL)
+          .then(response => {
+            if(response.ok) {
+              if(mounted) {
+                return response.json();
+              }
+            }
+          })
+          .then(json => {
+            if(json){
+              /* Set data state here on page load
+               * 
+               */
+              //setRemoteData(json);
+              console.log(remoteData);
+            }
+          })
+        }
+        else{
+          clearInterval(checkApiData);
+        } 
+      },2000); //interval set to 2 seconds (2000 ms)
+      return () => {
+        clearInterval(checkApiData);
+        mounted = false;
+      }
+  }, []);
 
   //interval to animate progress bar
     useEffect(() => {
@@ -67,39 +79,45 @@ function App() {
       return () => clearInterval(updateDonationHandler);
     }, [amountRaised, intervalAmount]);
 
-  const description = data.description.map(paragraph => <p>{paragraph}</p>);
+  //create a list of paragraphs for the description to render.
+  const description = data.description.map((paragraph, index) => <p key={index}>{paragraph}</p>);
   
   //create list of question items to render
-  const questions = data.questions.map(question =>
-    <CollapsibleComponent heading={question.question} body={question.answer}/>);
+  const questions = data.questions.map((question, index) =>
+    <CollapsibleComponent key={index} heading={question.question} body={question.answer}/>);
   
   //create list of rewards to render
-  const rewards = data.donationRewards.map(reward => <h4>{reward}</h4>);
+  const rewards = data.donationRewards.map((reward, index) => <h4 key={index}>{reward}</h4>);
   
   //check for form validation and submit form
-  //need to check for negative values.
   const [validated,setValidated] = useState(false);
+  
   const handleSubmit = (event) => {
     event.preventDefault();
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.stopPropagation();
     }
-    console.log("Amount to doante: " + donationAmount);
-    //Handle donation submit here ******************************
+    if(donationAmount > 0) {
+      //Handle donation submit here ******************************
+      console.log("Amount to doante: $" + donationAmount);
+
+      //input stripe payment link here.
+      window.location.href=stripeURL;
+      setValidated(true);
+    }
     
-    setValidated(true);
   };
 
+  //Test donations
+  useEffect(() => {
+  
+  });
 
   return (
     <div className="App container" style={{ minHeight: '240px' }}>
-      <div className='' >
-      <ToastContainer className='p-3' position='top-start' style={{ zIndex: 1 }}>
-        {/*Push new notifications in here when a new donation occurs. */}
-        <Notification name="Tim" donation={10} message="Hello World! This is a toast message"/>
-        <Notification name="Kevin" donation={20} message="Hello World! This is a toast message"/>
-      </ToastContainer>
+      <div>
+        <Notification />
       </div>
       
       <Container fluid>
@@ -111,7 +129,7 @@ function App() {
             <Col>
               <h2>Description</h2>
               <hr/>
-              <p>{description}</p>
+              {description}
               <hr/>
             </Col>
 
@@ -134,14 +152,14 @@ function App() {
           <Row>
             {/*Donation Panel*/}
             <Col className='fundraiser-component p-4 bg-secondary-subtle'>
-              <h4>Raised: ${amountRaised.toLocaleString(undefined, {minimumFractionDigits:0})} of ${goal}</h4>
+              <h4>Raised: ${amountRaised.toLocaleString(undefined, {minimumFractionDigits:0})} of ${goal.toLocaleString(undefined, {minimumFractionDigits:0})}</h4>
               <ProgressBar now={percent} label={`${percent}%`} variant="success"/>
               <p>{donations} Donations</p>
                     
               <Form noValidate validated={validated} onSubmit={handleSubmit}>
                 <Form.Group className="mb-3" controlId="donationValidation">
                   <Form.Label>Donation Amount</Form.Label>
-                  <Form.Control required type="number" placeholder="Enter amount" onChange={(e) => setDonationAmount(e.target.value)}/>
+                  <Form.Control required type="number" placeholder="Enter amount" isValid={donationAmount > 0} isInvalid={donationAmount <= 0} onChange={(e) => setDonationAmount(e.target.value)}/>
                   <Form.Control.Feedback type="invalid">Please enter a positive number</Form.Control.Feedback>
                 </Form.Group>
                 

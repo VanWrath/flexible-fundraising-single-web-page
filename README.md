@@ -1,90 +1,37 @@
-# Getting Started with Create React App
+# Flexible Fundraising React Web Page
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Table of contents
+1. [Installation](#Installation)
+2. [Configuration](#Configuration)
+3. [Deployment](#Deployment)
+4. [Hosted Demo](#Hosted Demo)
 
-## Available Scripts
+## Installation
+This installation process expects you to already have node.js and npm installed.
 
-In the project directory, you can run:
+1. Clone the repository: git clone `https://github.com/VanWrath/flexible-fundraising-single-web-page.git`
+2. Navigate to the app directory in the terminal: cd flexible-fundraising-single-web-page
+3. Install dependencies: npm install
+4. Start the app: npm start
 
-### `npm start`
+## Configuration
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-
-### Deploy with Cloudflare
-
-Deploy with 'npm run pages:deploy'
-You may also follow the instructions from cloudflare on how to deploy this react app here: [https://developers.cloudflare.com/pages/framework-guides/deploy-a-react-site/](https://developers.cloudflare.com/pages/framework-guides/deploy-a-react-site/)
+In this section, I will go over how to customize the content for the page to suit your needs.
 
 ### To Update Title and Favicon
- In the public folder, open up 'index.html' file.
- On line 5, you can change the favicon in the Link tag. just replace the url in the href of the icon you want.
+ In the public folder, open up `public/index.html` file.
+ On line 5, you can change the favicon in the Link tag. Just replace the url in the href with the icon you want.
  You may also upload your own favicon in the public folder and link that.
 
  You can change the title of the webpage on line 27 in the title tag.
 
  ### Updating the page content
 
-You may updte the content of the page to suit your campaign. You can do this in the 'src/data/data.json' directory.
-Once you have opened the data.json file, you may edit the variables following the JSON format. Editing these variables will update the page content to your liking.
+You may update the content of the page to suit your campaign. You can do this in the `src/data/data.json` file. You can update fields such as the title, description, fundraising goal, questions and answers, donation rewards, and API url links.
+
+Once you have opened the `data.json` file, you may edit the variables following the JSON format. Editing these variables will update the page content to your liking.
+
+The description is in an array, where each element in the array is a paragraph. So you'll have to paste in your paragraphs in the array properly.
 
 You may add any number of questions in the questions array and it will all be displayed on the page. just make sure your questions are in the following format:
 
@@ -97,14 +44,45 @@ You may add any number of questions in the questions array and it will all be di
 
 You may also edit the rewards in "donationRewards" array.
 
-## Connecting to external APIs
+### Connecting to external APIs
 
-If you need to fetch data from an external API, you may do so using the fetch block in line 29.
+Just a disclaimer. API integration has NOT been tested to work. So integrating APIs may require more work.
 
-## Handling form submissions
+#### Donation data
 
-There is a user form that takes in a user's email. This can be found in 'src/Components/UserForm.js'. You can edit the code on how to handle the email submission in the 'handleSumbit' function.
+If you need to fetch data from an external API, you may do so by updating the `URL` variable on line 19 in the `/src/App.js` file. This URL link is used in the Fetch block on line 39 and is designed to make API calls in 2 second intervals to retreive donation data. This feature has not been tested and not guaranteed to work right away. 
 
-## Stripe integration
+Currently the donation data displayed is dummy data from `src/data/data.json`.
 
-Comming soon...
+#### Notifications
+
+When new donations are made, there should be an API request to get that data for recent donation notifications. You can update API URL in `src/data/data.json` with the "notificationApiUrl" field.
+
+The notificaiton data will be used in the file `src/Components/Notification/Notification.js`. You will have to adjust how the API data is handled in the fetch function.
+
+#### Handling form submissions
+
+There is a user form that takes in a user's email. This can be found in `src/Components/UserForm.js`. You can edit the code on how to handle the email submission in the 'handleSumbit' function.
+
+### Stripe integration
+
+Stripe integration has not been test at all. I have added a field in `src/data/data.json` called "stripePaymentLink" to store the stripe payment link. This link is opened when the "Donate Now" button is clicked. You can modify the code if it doesn't work in the `src/App.js` file in the "handleSubmit" function on line 106.
+
+## Deployment
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+
+### `npm run build` fails to minify
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+### Deploy with Cloudflare
+
+Deploy with 'npm run pages:deploy'
+
+You may also follow the instructions from cloudflare on how to deploy this react app here: [https://developers.cloudflare.com/pages/framework-guides/deploy-a-react-site/](https://developers.cloudflare.com/pages/framework-guides/deploy-a-react-site/)
+
+## Hosted Demo
+
+This Demo is hosted on github pages.
+[Demo]()

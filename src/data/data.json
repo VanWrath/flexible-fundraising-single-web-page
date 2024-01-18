@@ -35,21 +35,7 @@
         "$20 - Lorem ipsum dolor sit amet",
         "$30 - Lorem ipsum dolor sit amet"
     ],
-    "recentDonations": [
-        {
-            "name":"Tim",
-            "donation":10,
-            "message":"Hello World! This is a toast message."
-        },
-        {
-            "name":"Kevin",
-            "donation":20,
-            "message":"Hello World! This is a toast message."
-        },
-        {
-            "name":"Alice",
-            "donation":30,
-            "message":"Hello World! This is a toast message."
-        }
-    ]
+    "donationDataApiUrl":"",
+    "notificationApiUrl":"",
+    "stripePaymentLink":""
 }
