@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/flexible-fundraising-single-web-page/static/css/main.b0c4afa1.css",
+    "main.js": "/flexible-fundraising-single-web-page/static/js/main.1adbf347.js",
+    "static/js/787.a949ab27.chunk.js": "/flexible-fundraising-single-web-page/static/js/787.a949ab27.chunk.js",
+    "index.html": "/flexible-fundraising-single-web-page/index.html",
+    "main.b0c4afa1.css.map": "/flexible-fundraising-single-web-page/static/css/main.b0c4afa1.css.map",
+    "main.1adbf347.js.map": "/flexible-fundraising-single-web-page/static/js/main.1adbf347.js.map",
+    "787.a949ab27.chunk.js.map": "/flexible-fundraising-single-web-page/static/js/787.a949ab27.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.b0c4afa1.css",
+    "static/js/main.1adbf347.js"
+  ]
+}
