@@ -1,5 +1,7 @@
 # Flexible Fundraising React Web Page
 
+A reusable web app for fundraising campaigns. Built with ReactJS.
+
 ## Table of contents
 1. [Installation](#Installation)
 2. [Configuration](#Configuration)
