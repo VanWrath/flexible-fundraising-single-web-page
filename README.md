@@ -85,4 +85,4 @@ You may also follow the instructions from cloudflare on how to deploy this react
 ## Hosted Demo
 
 This Demo is hosted on github pages.
-[Demo]()
+[Demo](https://vanwrath.github.io/flexible-fundraising-single-web-page/)
