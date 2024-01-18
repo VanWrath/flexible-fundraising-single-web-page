@@ -4,7 +4,7 @@
 1. [Installation](#Installation)
 2. [Configuration](#Configuration)
 3. [Deployment](#Deployment)
-4. [Hosted Demo](#Hosted Demo)
+4. [Hosted Demo](#Hosted-Demo)
 
 ## Installation
 This installation process expects you to already have node.js and npm installed.
@@ -85,4 +85,5 @@ You may also follow the instructions from cloudflare on how to deploy this react
 ## Hosted Demo
 
 This Demo is hosted on github pages.
-[Demo](https://vanwrath.github.io/flexible-fundraising-single-web-page/)
+
+[Demo Link](https://vanwrath.github.io/flexible-fundraising-single-web-page/)
