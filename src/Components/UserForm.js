@@ -8,7 +8,8 @@ import Button from 'react-bootstrap/Button';
  */
 function UserForm(props) {
   const [validated, setValidated] = useState(false);
-  const[email, setEmail] = useState();
+  const [email, setEmail] = useState();
+  const [question, setQuestion] = useState();
 
   //handles email form submission
   const handleSubmit = (event) => {
@@ -18,8 +19,8 @@ function UserForm(props) {
       event.stopPropagation();
     }
     else{
-      //handle email submission here *********************
-      console.log("Email has been submitted: " + email);
+      /******** Handle email submission here ********/
+      alert("Email has been submitted \nEmail: " + email + "\nQuestion: " + question);
 
     }
     setValidated(true);
@@ -37,6 +38,12 @@ function UserForm(props) {
         <Form.Label>Email Address</Form.Label>
         <Form.Control required type="email" placeholder="Enter email"  onChange={(e) => setEmail(e.target.value)}/>
         <Form.Control.Feedback type="invalid">Please enter a valid email.</Form.Control.Feedback>
+      </Form.Group>
+
+      <Form.Group className='my-4' controlId="validatedQuestion">
+        <Form.Label>Question</Form.Label>
+        <Form.Control required type="text" placeholder="Enter Question" onChange={(e) => setQuestion(e.target.value)} />
+        <Form.Control.Feedback type="invalid">Please enter a question.</Form.Control.Feedback>
       </Form.Group>
       
       <Button variant="outline-dark" type="submit">

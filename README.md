@@ -52,7 +52,7 @@ Just a disclaimer. API integration has NOT been tested to work. So integrating A
 
 #### Donation data
 
-If you need to fetch data from an external API, you may do so by updating the `URL` variable on line 19 in the `/src/App.js` file. This URL link is used in the Fetch block on line 39 and is designed to make API calls in 2 second intervals to retreive donation data. This feature has not been tested and not guaranteed to work right away. 
+If you need to fetch data from an external API, you may do so by updating the `URL` variable on line 20 in the `/src/App.js` file. This URL link is used in the fetch block on line 42 and is designed to make API calls in 2 second intervals to retreive donation data. This feature has not been tested and not guaranteed to work right away. 
 
 Currently the donation data displayed is dummy data from `src/data/data.json`.
 
@@ -68,7 +68,7 @@ There is a user form that takes in a user's email. This can be found in `src/Com
 
 ### Stripe integration
 
-Stripe integration has not been test at all. I have added a field in `src/data/data.json` called "stripePaymentLink" to store the stripe payment link. This link is opened when the "Donate Now" button is clicked. You can modify the code if it doesn't work in the `src/App.js` file in the "handleSubmit" function on line 106.
+Stripe integration has not been test at all. I have added a field in `src/data/data.json` called "stripePaymentLink" to store the stripe payment link. This link is opened when the "Donate Now" button is clicked. You can modify the code if it doesn't work in the `src/App.js` file in the "handleSubmit" function on line 108.
 
 ## Deployment
 

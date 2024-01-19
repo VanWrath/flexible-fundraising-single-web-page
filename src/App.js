@@ -1,6 +1,7 @@
 import './App.css';
 import { useState, useEffect } from 'react';
 import data from './data/data.json';
+import currencies from './data/currencies.json';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -26,8 +27,9 @@ function App() {
   const [donations, setDonations] = useState(data.donations); //replace data.donations with data from an API to get live donations values.
   const [goal, setGoal] = useState(data.goal);
   const [intervalAmount, setIntervalAmount] = useState(data.amountRaised*0.05);
-  const [donationAmount, setDonationAmount] = useState();
   const [remoteData, setRemoteData] = useState();
+  const [donationAmount, setDonationAmount] = useState();
+  const [selectedCurrency, setSelectedCurrency] = useState("USD");
 
   /* Request API data. 
    * Update donations and amount raised dynamically.
@@ -87,8 +89,8 @@ function App() {
     <CollapsibleComponent key={index} heading={question.question} body={question.answer}/>);
   
   //create list of rewards to render
-  const rewards = data.donationRewards.map((reward, index) => <h4 key={index}>{reward}</h4>);
-  
+  const rewards = data.donationRewards.map((reward, index) => <h4 key={index} className='my-3'>{reward}</h4>);
+
   //check for form validation and submit form
   const [validated,setValidated] = useState(false);
   
@@ -99,20 +101,15 @@ function App() {
       event.stopPropagation();
     }
     if(donationAmount > 0) {
-      //Handle donation submit here ******************************
-      console.log("Amount to doante: $" + donationAmount);
+      /************ Handle donation submit here ************/
+      alert("Donated: " + donationAmount.toLocaleString("en-US",  {style:"currency", currency:selectedCurrency}) + " " + selectedCurrency );
 
       //input stripe payment link here.
-      window.location.href=stripeURL;
+      //window.location.href=stripeURL;
       setValidated(true);
     }
     
   };
-
-  //Test donations
-  useEffect(() => {
-  
-  });
 
   return (
     <div className="App container" style={{ minHeight: '240px' }}>
@@ -124,8 +121,8 @@ function App() {
         <h1 className='m-5 text-center'>{data.title}</h1>
       <Row className='d-flex justify-content-between'>
         {/* Main Column*/}
-        <Col md={8}>
-          <Row>
+        <Col md={7}>
+          <Row >
             <Col>
               <h2>Description</h2>
               <hr/>
@@ -135,7 +132,7 @@ function App() {
 
             <Row>  
               {/* Q&A section */}
-              <Col>
+              <Col className='pb-4'>
                 <h3 className='my-3 p-2'>Q&A</h3>
                 {/* Load questions and answers here */
                questions}
@@ -155,12 +152,24 @@ function App() {
               <h4>Raised: ${amountRaised.toLocaleString(undefined, {minimumFractionDigits:0})} of ${goal.toLocaleString(undefined, {minimumFractionDigits:0})}</h4>
               <ProgressBar now={percent} label={`${percent}%`} variant="success"/>
               <p>{donations} Donations</p>
-                    
+     
               <Form noValidate validated={validated} onSubmit={handleSubmit}>
                 <Form.Group className="mb-3" controlId="donationValidation">
                   <Form.Label>Donation Amount</Form.Label>
-                  <Form.Control required type="number" placeholder="Enter amount" isValid={donationAmount > 0} isInvalid={donationAmount <= 0} onChange={(e) => setDonationAmount(e.target.value)}/>
-                  <Form.Control.Feedback type="invalid">Please enter a positive number</Form.Control.Feedback>
+                  <Row>
+                    <Col sm={8}>
+                      <Form.Control required type="number" placeholder="Enter amount" isValid={donationAmount > 0} isInvalid={donationAmount <= 0} onChange={(e) => setDonationAmount(e.target.value)}/>
+                      <Form.Control.Feedback type="invalid">Please enter a positive number</Form.Control.Feedback>
+                    </Col>
+
+                    <Col sm={4}>
+                      <Form.Select onChange={(e) => setSelectedCurrency(e.target.value)}>
+                        {currencies.map( (c, index) => <option key={index} value={c.currency}>{c.currency}</option>)}
+                      </Form.Select>
+                    </Col>
+                  </Row>
+                  
+                  
                 </Form.Group>
                 
                 <Form.Group className='d-grid'>
@@ -173,9 +182,8 @@ function App() {
           <Row>
 
             {/* Donation Rewards section */}
-            <Col className='p-4'>
+            <Col className='py-4'>
               <h3>Donation Rewards</h3>
-              <br/>
               {rewards}
             </Col>
           </Row>

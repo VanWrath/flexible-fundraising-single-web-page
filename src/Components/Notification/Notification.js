@@ -61,7 +61,7 @@ function Notification() {
     //Test Notifications. Delete this useEffect code block in production.
     useEffect(() => {
         const pustTestNotif = setInterval(() =>{
-            if(id > 10){
+            if(id > 5){
                 return clearInterval(pustTestNotif);
             }
             addNotification(++id, "Tim", amount+=10, "$", "Hello World! This is a donation message.");
