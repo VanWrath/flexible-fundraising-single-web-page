@@ -133,7 +133,7 @@ function App() {
             <Row>  
               {/* Q&A section */}
               <Col className='pb-4'>
-                <h3 className='my-3 p-2'>Q&A</h3>
+                <h3 className='my-3 p-2'>Frequently Asked Questions</h3>
                 {/* Load questions and answers here */
                questions}
                 <CollapsibleComponent heading={data.finalQuestion.question} body={<UserForm description={data.finalQuestion.answer}/>}/>
