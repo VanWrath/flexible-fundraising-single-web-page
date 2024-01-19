@@ -84,6 +84,12 @@ Deploy with 'npm run pages:deploy'
 
 You may also follow the instructions from cloudflare on how to deploy this react app here: [https://developers.cloudflare.com/pages/framework-guides/deploy-a-react-site/](https://developers.cloudflare.com/pages/framework-guides/deploy-a-react-site/)
 
+### Deploying to Github Pages
+
+Run the following command:
+
+`npm run deploy`
+
 ## Hosted Demo
 
 This Demo is hosted on github pages.
